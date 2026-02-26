@@ -253,21 +253,20 @@ class TeslaEnergyFlowCard extends HTMLElement {
           position: absolute;
           width: 172px;
           height: 172px;
-          border: 1px solid rgba(255,255,255,0.13);
-          background: linear-gradient(155deg, #0f1724 0%, #0b111a 100%);
+          border: 1px solid rgba(214, 232, 255, 0.34);
+          background: #182233;
+          box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
         }
 
         .face.front { transform: translateZ(86px); }
         .face.back { transform: rotateY(180deg) translateZ(86px); }
         .face.right { transform: rotateY(90deg) translateZ(86px); }
         .face.left { transform: rotateY(-90deg) translateZ(86px); }
-        .face.bottom { transform: rotateX(-90deg) translateZ(86px); background: #090f18; }
+        .face.bottom { transform: rotateX(-90deg) translateZ(86px); background: #121a27; }
 
         .face.top {
           transform: rotateX(90deg) translateZ(86px);
-          background:
-            repeating-linear-gradient(90deg, rgba(255,255,255,0.11) 0px, rgba(255,255,255,0.11) 1px, rgba(20,34,58,.96) 1px, rgba(20,34,58,.96) 22px),
-            repeating-linear-gradient(0deg, rgba(255,255,255,0.09) 0px, rgba(255,255,255,0.09) 1px, rgba(24,42,68,.96) 1px, rgba(24,42,68,.96) 22px);
+          background: #25354d;
         }
 
         .base-glow {
@@ -277,9 +276,10 @@ class TeslaEnergyFlowCard extends HTMLElement {
           width: 280px;
           height: 12px;
           transform: translateX(-50%);
-          background: radial-gradient(50% 100% at 50% 0, rgba(171, 194, 229, .34) 0%, rgba(171, 194, 229, .08) 60%, rgba(171, 194, 229, 0) 100%);
-          filter: blur(8px);
+          background: transparent;
+          filter: none;
           pointer-events: none;
+          display: none;
         }
 
         .node {
