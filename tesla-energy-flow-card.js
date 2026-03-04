@@ -1,5 +1,5 @@
 class TeslaEnergyFlowCard extends HTMLElement {
-  static version = "0.2.6";
+  static version = "0.2.7";
   static _assetBaseUrl = null;
 
   constructor() {
@@ -10,6 +10,7 @@ class TeslaEnergyFlowCard extends HTMLElement {
     this._demoData = null;
     this._initialized = false;
     this._elements = {};
+    this._imageLoadToken = 0;
   }
 
   static _guessAssetBaseUrl() {
@@ -309,25 +310,45 @@ class TeslaEnergyFlowCard extends HTMLElement {
     }
   }
 
-  _setImageSource(primaryUrl) {
-    const repo = "francescogalli-design/tesla-power-widget";
-    const versionTag = `v${TeslaEnergyFlowCard.version}`;
-    const githubVersioned = `https://raw.githubusercontent.com/${repo}/${versionTag}/home.png`;
-    const githubMain = `https://raw.githubusercontent.com/${repo}/main/home.png`;
+  _storageGet(key) {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
 
-    const urls = [
-      primaryUrl,
-      TeslaEnergyFlowCard._assetUrl("home.png"),
-      `${window.location.origin}/local/home.png`,
-      githubVersioned,
-      githubMain,
-    ].filter(Boolean);
+  _storageSet(key, value) {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      // ignore quota/security errors
+    }
+  }
 
-    const unique = [...new Set(urls)];
+  async _fetchAsDataUrl(url) {
+    try {
+      const res = await fetch(url, { cache: "force-cache" });
+      if (!res.ok) return null;
+      const blob = await res.blob();
+      return await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : null);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(blob);
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  _loadFirstWorkingImage(urls, token) {
+    const unique = [...new Set(urls.filter(Boolean))];
     let idx = 0;
     const img = this._elements.image;
 
     const tryNext = () => {
+      if (token !== this._imageLoadToken) return;
       if (idx >= unique.length) {
         img.onload = null;
         img.onerror = null;
@@ -338,6 +359,7 @@ class TeslaEnergyFlowCard extends HTMLElement {
 
       const url = unique[idx++];
       img.onload = () => {
+        if (token !== this._imageLoadToken) return;
         img.onload = null;
         img.onerror = null;
         img.style.display = "block";
@@ -350,6 +372,37 @@ class TeslaEnergyFlowCard extends HTMLElement {
     };
 
     tryNext();
+  }
+
+  async _setImageSource(primaryUrl) {
+    this._imageLoadToken += 1;
+    const token = this._imageLoadToken;
+
+    const repo = "francescogalli-design/tesla-power-widget";
+    const versionTag = `v${TeslaEnergyFlowCard.version}`;
+    const githubVersioned = `https://raw.githubusercontent.com/${repo}/${versionTag}/home.png`;
+    const githubMain = `https://raw.githubusercontent.com/${repo}/main/home.png`;
+    const cacheKey = `tef_home_png_${TeslaEnergyFlowCard.version}`;
+    const cachedDataUrl = this._storageGet(cacheKey);
+
+    const urls = [
+      cachedDataUrl,
+      primaryUrl,
+      TeslaEnergyFlowCard._assetUrl("home.png"),
+      `${window.location.origin}/local/home.png`,
+      githubVersioned,
+      githubMain,
+    ].filter(Boolean);
+
+    this._loadFirstWorkingImage(urls, token);
+
+    if (!cachedDataUrl) {
+      const dataUrl = await this._fetchAsDataUrl(githubVersioned) || await this._fetchAsDataUrl(githubMain);
+      if (!dataUrl) return;
+      this._storageSet(cacheKey, dataUrl);
+      if (token !== this._imageLoadToken) return;
+      this._loadFirstWorkingImage([dataUrl, ...urls], token);
+    }
   }
 
   _applyStyleConfig() {

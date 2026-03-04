@@ -41,6 +41,8 @@ Fallback automatici immagine:
 4. `https://raw.githubusercontent.com/francescogalli-design/tesla-power-widget/vX.Y.Z/home.png`
 5. `https://raw.githubusercontent.com/francescogalli-design/tesla-power-widget/main/home.png`
 
+In più, dalla `v0.2.7` la card salva il PNG in cache locale (localStorage) alla prima riuscita, per riuso automatico senza dipendere dal file dentro `www/community`.
+
 ## Configurazione Lovelace
 
 Snippet pronto: [examples/lovelace.yaml](/Users/francesco/Documents/Sviluppo/Homeassistant/TeslaPW/examples/lovelace.yaml)
