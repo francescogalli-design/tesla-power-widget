@@ -38,6 +38,8 @@ Fallback automatici immagine:
 1. `image_url` da configurazione card
 2. `/hacsfiles/tesla-power-widget/home.png`
 3. `/local/home.png`
+4. `https://raw.githubusercontent.com/francescogalli-design/tesla-power-widget/vX.Y.Z/home.png`
+5. `https://raw.githubusercontent.com/francescogalli-design/tesla-power-widget/main/home.png`
 
 ## Configurazione Lovelace
 
