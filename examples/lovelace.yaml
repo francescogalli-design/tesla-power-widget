@@ -1,6 +1,10 @@
 type: custom:tesla-energy-flow-card
 title: Tesla Energy
 image_url: /hacsfiles/tesla-power-widget/home.png
+title_size: 18px
+value_size: 52px
+title_size_mobile: 14px
+value_size_mobile: 36px
 entities:
   solar_power: sensor.pv_power
   home_power: sensor.home_load_power

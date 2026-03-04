@@ -47,6 +47,10 @@ Snippet pronto: [examples/lovelace.yaml](/Users/francesco/Documents/Sviluppo/Hom
 type: custom:tesla-energy-flow-card
 title: Tesla Energy
 image_url: /hacsfiles/tesla-power-widget/home.png
+title_size: 18px
+value_size: 52px
+title_size_mobile: 14px
+value_size_mobile: 36px
 entities:
   solar_power: sensor.pv_power
   home_power: sensor.home_load_power
@@ -68,6 +72,16 @@ entities:
 - `entities.car_soc` (%)
 
 Se un valore non è disponibile, il relativo blocco viene nascosto.
+
+## Personalizzazione stile da YAML
+
+- `title_size` (es. `18px`)
+- `value_size` (es. `52px`)
+- `title_size_mobile` (es. `14px`)
+- `value_size_mobile` (es. `36px`)
+- `line_color` (es. `#666666`)
+- `text_color` (es. `#111111` per tema chiaro)
+- `text_dim_color` (es. `#555555`)
 
 ## Demo browser locale
 

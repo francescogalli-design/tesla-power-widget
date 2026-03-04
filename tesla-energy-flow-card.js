@@ -1,5 +1,5 @@
 class TeslaEnergyFlowCard extends HTMLElement {
-  static version = "0.2.4";
+  static version = "0.2.5";
   static _assetBaseUrl = null;
 
   constructor() {
@@ -51,6 +51,13 @@ class TeslaEnergyFlowCard extends HTMLElement {
       title: "Energy",
       entities: {},
       image_url: defaultImageUrl,
+      title_size: "18px",
+      value_size: "52px",
+      title_size_mobile: "14px",
+      value_size_mobile: "36px",
+      line_color: null,
+      text_color: null,
+      text_dim_color: null,
       labels: {
         home: "Casa",
         solar: "Pannelli Solari",
@@ -67,6 +74,7 @@ class TeslaEnergyFlowCard extends HTMLElement {
     }
 
     this._setImageSource(this._config.image_url);
+    this._applyStyleConfig();
     this._applyLabels();
     this._renderFromState();
   }
@@ -310,27 +318,50 @@ class TeslaEnergyFlowCard extends HTMLElement {
 
     const unique = [...new Set(urls)];
     let idx = 0;
+    const img = this._elements.image;
 
     const tryNext = () => {
       if (idx >= unique.length) {
-        this._elements.image.style.display = "none";
+        img.onload = null;
+        img.onerror = null;
+        img.style.display = "none";
         this._elements.fallback.style.display = "flex";
         return;
       }
+
       const url = unique[idx++];
-      this._elements.image.src = url;
+      img.onload = () => {
+        img.onload = null;
+        img.onerror = null;
+        img.style.display = "block";
+        this._elements.fallback.style.display = "none";
+      };
+      img.onerror = () => {
+        tryNext();
+      };
+      img.src = url;
     };
 
-    const onError = () => tryNext();
-    const onLoad = () => {
-      this._elements.image.removeEventListener("error", onError);
-      this._elements.image.style.display = "block";
-      this._elements.fallback.style.display = "none";
-    };
-
-    this._elements.image.addEventListener("error", onError, { once: true });
-    this._elements.image.addEventListener("load", onLoad, { once: true });
     tryNext();
+  }
+
+  _applyStyleConfig() {
+    const host = this.style;
+    const cfg = this._config || {};
+
+    host.setProperty("--title-size", cfg.title_size || "18px");
+    host.setProperty("--value-size", cfg.value_size || "52px");
+    host.setProperty("--title-size-mobile", cfg.title_size_mobile || "14px");
+    host.setProperty("--value-size-mobile", cfg.value_size_mobile || "36px");
+
+    if (cfg.line_color) host.setProperty("--tef-line", cfg.line_color);
+    else host.removeProperty("--tef-line");
+
+    if (cfg.text_color) host.setProperty("--tef-text-main", cfg.text_color);
+    else host.removeProperty("--tef-text-main");
+
+    if (cfg.text_dim_color) host.setProperty("--tef-text-dim", cfg.text_dim_color);
+    else host.removeProperty("--tef-text-dim");
   }
 
   _toNumber(v, fallback = null) {
