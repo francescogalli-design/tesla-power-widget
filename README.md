@@ -104,3 +104,5 @@ python3 -m http.server 8080
 ```
 
 Apri: `http://localhost:8080/index.html`
+
+Il demo usa gli stessi default CSS della card Home Assistant (layout 1:1).

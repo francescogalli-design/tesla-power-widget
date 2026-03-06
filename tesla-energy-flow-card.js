@@ -1,5 +1,5 @@
 class TeslaEnergyFlowCard extends HTMLElement {
-  static version = "0.2.9";
+  static version = "0.2.10";
   static _assetBaseUrl = null;
 
   constructor() {
@@ -255,31 +255,31 @@ class TeslaEnergyFlowCard extends HTMLElement {
             <div class="tec-card__image-fallback" part="image-fallback" id="homeFallback">home.png non trovato</div>
           </div>
 
-      <div class="tec-card__node" part="node node-home" id="n-home" style="left: var(--pos-home-left, 26%); top: var(--pos-home-top, 22%); --line-len: var(--line-home-len, 238px);">
+      <div class="tec-card__node" part="node node-home" id="n-home" style="left: var(--pos-home-left, 29%); top: var(--pos-home-top, 40%); --line-len: var(--line-home-len, 120px);">
             <div class="tec-card__title" part="title title-home" data-title="home">Casa</div>
             <div class="tec-card__value" part="value value-home" data-k="home">--</div>
             <div class="tec-card__line tec-card__line--down" part="line line-home line-down"></div>
           </div>
 
-      <div class="tec-card__node" part="node node-solar" id="n-solar" style="left: var(--pos-solar-left, 66%); top: var(--pos-solar-top, 20%); --line-len: var(--line-solar-len, 206px);">
+      <div class="tec-card__node" part="node node-solar" id="n-solar" style="left: var(--pos-solar-left, 56%); top: var(--pos-solar-top, 36%); --line-len: var(--line-solar-len, 70px);">
             <div class="tec-card__title" part="title title-solar" data-title="solar">Pannelli Solari</div>
             <div class="tec-card__value" part="value value-solar" data-k="solar">--</div>
             <div class="tec-card__line tec-card__line--down" part="line line-solar line-down"></div>
           </div>
 
-      <div class="tec-card__node" part="node node-grid" id="n-grid" style="left: var(--pos-grid-left, 84%); top: var(--pos-grid-top, 66%); --line-len: var(--line-grid-len, 125px);">
+      <div class="tec-card__node" part="node node-grid" id="n-grid" style="left: var(--pos-grid-left, 74%); top: var(--pos-grid-top, 86%); --line-len: var(--line-grid-len, 35px);">
             <div class="tec-card__title" part="title title-grid" data-title="grid">Rete</div>
             <div class="tec-card__value" part="value value-grid" data-k="grid">--</div>
             <div class="tec-card__line tec-card__line--up" part="line line-grid line-up"></div>
           </div>
 
-      <div class="tec-card__node" part="node node-battery" id="n-battery" style="left: var(--pos-battery-left, 50%); top: var(--pos-battery-top, 86%); --line-len: var(--line-battery-len, 124px);">
+      <div class="tec-card__node" part="node node-battery" id="n-battery" style="left: var(--pos-battery-left, 46%); top: var(--pos-battery-top, 86%); --line-len: var(--line-battery-len, 44px);">
             <div class="tec-card__title" part="title title-battery" data-title="battery">Batteria</div>
             <div class="tec-card__value" part="value value-battery" data-k="battery">--</div>
             <div class="tec-card__line tec-card__line--up" part="line line-battery line-up"></div>
           </div>
 
-      <div class="tec-card__node" part="node node-car" id="n-car" style="left: var(--pos-car-left, 16%); top: var(--pos-car-top, 66%); --line-len: var(--line-car-len, 125px);">
+      <div class="tec-card__node" part="node node-car" id="n-car" style="left: var(--pos-car-left, 56%); top: var(--pos-car-top, 90%); --line-len: var(--line-car-len, 55px);">
             <div class="tec-card__title" part="title title-car" data-title="car">Auto</div>
             <div class="tec-card__value" part="value value-car" data-k="car">--</div>
             <div class="tec-card__line tec-card__line--up" part="line line-car line-up"></div>

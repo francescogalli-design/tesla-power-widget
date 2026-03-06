@@ -29,7 +29,7 @@ body {
   border-radius: 8px;
   font: inherit;
   font-size: 12px;
-  padding: 6px 10px;
+  padding: 8px 8px;
   cursor: pointer;
   transition: background 120ms ease-out, border-color 120ms ease-out, transform 80ms ease-out;
 }
@@ -50,50 +50,6 @@ tesla-energy-flow-card {
   min-height: 560px;
 }
 
-/* Tesla Energy Card – class hooks for easy customization */
-
-/* Tesla Energy Card – styling hooks (Shadow DOM safe) */
-
-tesla-energy-flow-card {
-  /* CSS variables penetrate Shadow DOM */
-  --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --bg: #0f0f0f;
-  --text-main: #f2f2f2;
-  --text-dim: #b9b9b9;
-  --line: #6f6f6f;
-
-  /* Typography + sizing */
-  --title-size: 10px;
-  --title-weight: 100;
-  --value-size: 20px;
-  --value-weight: 100;
-
-  /* Lines + image */
-  --image-max-width: 820px;
-  --image-max-height: 420px;
-}
-
-/* ::part() styles Shadow DOM parts */
-tesla-energy-flow-card::part(title) {
-}
-
-tesla-energy-flow-card::part(value) {
-}
-
-tesla-energy-flow-card::part(line) {
-}
-
-tesla-energy-flow-card::part(image) {
-}
-
-/* Optional per-node targeting examples */
-tesla-energy-flow-card::part(title-home) {
-  font-size: 10px;
-}
-
-tesla-energy-flow-card::part(value-solar) {
-}
-
 @media (max-width: 768px) {
   .demo-layout {
     padding: 10px;
@@ -108,4 +64,3 @@ tesla-energy-flow-card::part(value-solar) {
     padding: 5px 9px;
   }
 }
-
