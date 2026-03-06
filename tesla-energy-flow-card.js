@@ -1,5 +1,5 @@
 class TeslaEnergyFlowCard extends HTMLElement {
-  static version = "0.2.8";
+  static version = "0.2.9";
   static _assetBaseUrl = null;
 
   constructor() {
@@ -52,10 +52,11 @@ class TeslaEnergyFlowCard extends HTMLElement {
       title: "Energy",
       entities: {},
       image_url: defaultImageUrl,
-      title_size: "18px",
-      value_size: "52px",
-      title_size_mobile: "14px",
-      value_size_mobile: "36px",
+      // Leave these unset by default so external CSS variables can control them.
+      title_size: null,
+      value_size: null,
+      title_size_mobile: null,
+      value_size_mobile: null,
       line_color: null,
       text_color: null,
       text_dim_color: null,
@@ -254,31 +255,31 @@ class TeslaEnergyFlowCard extends HTMLElement {
             <div class="tec-card__image-fallback" part="image-fallback" id="homeFallback">home.png non trovato</div>
           </div>
 
-          <div class="tec-card__node" part="node node-home" id="n-home" style="left: 26%; top: 22%; --line-len: 238px;">
+      <div class="tec-card__node" part="node node-home" id="n-home" style="left: var(--pos-home-left, 26%); top: var(--pos-home-top, 22%); --line-len: var(--line-home-len, 238px);">
             <div class="tec-card__title" part="title title-home" data-title="home">Casa</div>
             <div class="tec-card__value" part="value value-home" data-k="home">--</div>
             <div class="tec-card__line tec-card__line--down" part="line line-home line-down"></div>
           </div>
 
-          <div class="tec-card__node" part="node node-solar" id="n-solar" style="left: 66%; top: 20%; --line-len: 206px;">
+      <div class="tec-card__node" part="node node-solar" id="n-solar" style="left: var(--pos-solar-left, 66%); top: var(--pos-solar-top, 20%); --line-len: var(--line-solar-len, 206px);">
             <div class="tec-card__title" part="title title-solar" data-title="solar">Pannelli Solari</div>
             <div class="tec-card__value" part="value value-solar" data-k="solar">--</div>
             <div class="tec-card__line tec-card__line--down" part="line line-solar line-down"></div>
           </div>
 
-          <div class="tec-card__node" part="node node-grid" id="n-grid" style="left: 84%; top: 66%; --line-len: 125px;">
+      <div class="tec-card__node" part="node node-grid" id="n-grid" style="left: var(--pos-grid-left, 84%); top: var(--pos-grid-top, 66%); --line-len: var(--line-grid-len, 125px);">
             <div class="tec-card__title" part="title title-grid" data-title="grid">Rete</div>
             <div class="tec-card__value" part="value value-grid" data-k="grid">--</div>
             <div class="tec-card__line tec-card__line--up" part="line line-grid line-up"></div>
           </div>
 
-          <div class="tec-card__node" part="node node-battery" id="n-battery" style="left: 50%; top: 86%; --line-len: 124px;">
+      <div class="tec-card__node" part="node node-battery" id="n-battery" style="left: var(--pos-battery-left, 50%); top: var(--pos-battery-top, 86%); --line-len: var(--line-battery-len, 124px);">
             <div class="tec-card__title" part="title title-battery" data-title="battery">Batteria</div>
             <div class="tec-card__value" part="value value-battery" data-k="battery">--</div>
             <div class="tec-card__line tec-card__line--up" part="line line-battery line-up"></div>
           </div>
 
-          <div class="tec-card__node" part="node node-car" id="n-car" style="left: 16%; top: 66%; --line-len: 125px;">
+      <div class="tec-card__node" part="node node-car" id="n-car" style="left: var(--pos-car-left, 16%); top: var(--pos-car-top, 66%); --line-len: var(--line-car-len, 125px);">
             <div class="tec-card__title" part="title title-car" data-title="car">Auto</div>
             <div class="tec-card__value" part="value value-car" data-k="car">--</div>
             <div class="tec-card__line tec-card__line--up" part="line line-car line-up"></div>
@@ -409,19 +410,29 @@ class TeslaEnergyFlowCard extends HTMLElement {
     const host = this.style;
     const cfg = this._config || {};
 
-    host.setProperty("--title-size", cfg.title_size || "18px");
-    host.setProperty("--value-size", cfg.value_size || "52px");
-    host.setProperty("--title-size-mobile", cfg.title_size_mobile || "14px");
-    host.setProperty("--value-size-mobile", cfg.value_size_mobile || "36px");
+    // Only set inline CSS vars when explicitly configured.
+    // Otherwise leave them to external CSS (themes / card-mod / demo-page.css).
+    if (cfg.title_size != null) host.setProperty("--title-size", String(cfg.title_size));
+    else host.removeProperty("--title-size");
 
-    if (cfg.line_color) host.setProperty("--tef-line", cfg.line_color);
-    else host.removeProperty("--tef-line");
+    if (cfg.value_size != null) host.setProperty("--value-size", String(cfg.value_size));
+    else host.removeProperty("--value-size");
 
-    if (cfg.text_color) host.setProperty("--tef-text-main", cfg.text_color);
-    else host.removeProperty("--tef-text-main");
+    if (cfg.title_size_mobile != null) host.setProperty("--title-size-mobile", String(cfg.title_size_mobile));
+    else host.removeProperty("--title-size-mobile");
 
-    if (cfg.text_dim_color) host.setProperty("--tef-text-dim", cfg.text_dim_color);
-    else host.removeProperty("--tef-text-dim");
+    if (cfg.value_size_mobile != null) host.setProperty("--value-size-mobile", String(cfg.value_size_mobile));
+    else host.removeProperty("--value-size-mobile");
+
+    // Optional color overrides (also via external CSS variables)
+    if (cfg.line_color != null) host.setProperty("--line", String(cfg.line_color));
+    else host.removeProperty("--line");
+
+    if (cfg.text_color != null) host.setProperty("--text-main", String(cfg.text_color));
+    else host.removeProperty("--text-main");
+
+    if (cfg.text_dim_color != null) host.setProperty("--text-dim", String(cfg.text_dim_color));
+    else host.removeProperty("--text-dim");
   }
 
   _toNumber(v, fallback = null) {
