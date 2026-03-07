@@ -1,5 +1,5 @@
 class TeslaEnergyFlowCard extends HTMLElement {
-  static version = "0.2.10";
+  static version = "0.2.11";
   static _assetBaseUrl = null;
 
   constructor() {
@@ -140,30 +140,39 @@ class TeslaEnergyFlowCard extends HTMLElement {
           overflow: hidden;
         }
 
-        .tec-card__center {
+        .tec-card__frame {
           position: absolute;
           left: 50%;
           top: 56%;
           transform: translate(-50%, -50%);
           width: min(74%, 820px);
-          max-height: 70%;
+          aspect-ratio: var(--frame-ratio, 820 / 420);
+          pointer-events: none;
+        }
+
+        .tec-card__center {
+          position: absolute;
+          inset: 0;
           display: flex;
           align-items: center;
           justify-content: center;
-          pointer-events: none;
+        }
+
+        .tec-card__overlay {
+          position: absolute;
+          inset: 0;
         }
 
         .tec-card__image {
           width: 100%;
-          max-width: var(--image-max-width, 820px);
-          max-height: var(--image-max-height, 420px);
+          height: 100%;
           object-fit: contain;
           display: block;
         }
 
         .tec-card__image-fallback {
-          width: min(100%, 820px);
-          height: 320px;
+          width: 100%;
+          height: 100%;
           border: 1px solid #2b2b2b;
           background: #121212;
           color: #8f8f8f;
@@ -241,7 +250,7 @@ class TeslaEnergyFlowCard extends HTMLElement {
         @media (max-width: 960px) {
           :host { min-height: 620px; }
           .tec-card { min-height: 620px; }
-          .tec-card__center { top: 58%; width: min(92%, 820px); }
+          .tec-card__frame { top: 58%; width: min(92%, 820px); }
           .tec-card__node { min-width: 100px; }
           .tec-card__title { font-size: var(--title-size-mobile, var(--title-size, 14px)); }
           .tec-card__value { font-size: var(--value-size-mobile, var(--value-size, 36px)); }
@@ -250,39 +259,43 @@ class TeslaEnergyFlowCard extends HTMLElement {
 
       <ha-card part="ha-card">
         <div class="tec-card">
-          <div class="tec-card__center" part="center" aria-hidden="true">
-            <img class="tec-card__image" part="image" id="homeImage" alt="Home" />
-            <div class="tec-card__image-fallback" part="image-fallback" id="homeFallback">home.png non trovato</div>
-          </div>
+          <div class="tec-card__frame" part="frame">
+            <div class="tec-card__center" part="center" aria-hidden="true">
+              <img class="tec-card__image" part="image" id="homeImage" alt="Home" />
+              <div class="tec-card__image-fallback" part="image-fallback" id="homeFallback">home.png non trovato</div>
+            </div>
 
-      <div class="tec-card__node" part="node node-home" id="n-home" style="left: var(--pos-home-left, 29%); top: var(--pos-home-top, 40%); --line-len: var(--line-home-len, 120px);">
-            <div class="tec-card__title" part="title title-home" data-title="home">Casa</div>
-            <div class="tec-card__value" part="value value-home" data-k="home">--</div>
-            <div class="tec-card__line tec-card__line--down" part="line line-home line-down"></div>
-          </div>
+            <div class="tec-card__overlay" part="overlay">
+              <div class="tec-card__node" part="node node-home" id="n-home" style="left: var(--pos-home-left, 29%); top: var(--pos-home-top, 40%); --line-len: var(--line-home-len, 120px);">
+                <div class="tec-card__title" part="title title-home" data-title="home">Casa</div>
+                <div class="tec-card__value" part="value value-home" data-k="home">--</div>
+                <div class="tec-card__line tec-card__line--down" part="line line-home line-down"></div>
+              </div>
 
-      <div class="tec-card__node" part="node node-solar" id="n-solar" style="left: var(--pos-solar-left, 56%); top: var(--pos-solar-top, 36%); --line-len: var(--line-solar-len, 70px);">
-            <div class="tec-card__title" part="title title-solar" data-title="solar">Pannelli Solari</div>
-            <div class="tec-card__value" part="value value-solar" data-k="solar">--</div>
-            <div class="tec-card__line tec-card__line--down" part="line line-solar line-down"></div>
-          </div>
+              <div class="tec-card__node" part="node node-solar" id="n-solar" style="left: var(--pos-solar-left, 56%); top: var(--pos-solar-top, 36%); --line-len: var(--line-solar-len, 70px);">
+                <div class="tec-card__title" part="title title-solar" data-title="solar">Pannelli Solari</div>
+                <div class="tec-card__value" part="value value-solar" data-k="solar">--</div>
+                <div class="tec-card__line tec-card__line--down" part="line line-solar line-down"></div>
+              </div>
 
-      <div class="tec-card__node" part="node node-grid" id="n-grid" style="left: var(--pos-grid-left, 74%); top: var(--pos-grid-top, 86%); --line-len: var(--line-grid-len, 35px);">
-            <div class="tec-card__title" part="title title-grid" data-title="grid">Rete</div>
-            <div class="tec-card__value" part="value value-grid" data-k="grid">--</div>
-            <div class="tec-card__line tec-card__line--up" part="line line-grid line-up"></div>
-          </div>
+              <div class="tec-card__node" part="node node-grid" id="n-grid" style="left: var(--pos-grid-left, 74%); top: var(--pos-grid-top, 86%); --line-len: var(--line-grid-len, 35px);">
+                <div class="tec-card__title" part="title title-grid" data-title="grid">Rete</div>
+                <div class="tec-card__value" part="value value-grid" data-k="grid">--</div>
+                <div class="tec-card__line tec-card__line--up" part="line line-grid line-up"></div>
+              </div>
 
-      <div class="tec-card__node" part="node node-battery" id="n-battery" style="left: var(--pos-battery-left, 46%); top: var(--pos-battery-top, 86%); --line-len: var(--line-battery-len, 44px);">
-            <div class="tec-card__title" part="title title-battery" data-title="battery">Batteria</div>
-            <div class="tec-card__value" part="value value-battery" data-k="battery">--</div>
-            <div class="tec-card__line tec-card__line--up" part="line line-battery line-up"></div>
-          </div>
+              <div class="tec-card__node" part="node node-battery" id="n-battery" style="left: var(--pos-battery-left, 46%); top: var(--pos-battery-top, 86%); --line-len: var(--line-battery-len, 44px);">
+                <div class="tec-card__title" part="title title-battery" data-title="battery">Batteria</div>
+                <div class="tec-card__value" part="value value-battery" data-k="battery">--</div>
+                <div class="tec-card__line tec-card__line--up" part="line line-battery line-up"></div>
+              </div>
 
-      <div class="tec-card__node" part="node node-car" id="n-car" style="left: var(--pos-car-left, 56%); top: var(--pos-car-top, 90%); --line-len: var(--line-car-len, 55px);">
-            <div class="tec-card__title" part="title title-car" data-title="car">Auto</div>
-            <div class="tec-card__value" part="value value-car" data-k="car">--</div>
-            <div class="tec-card__line tec-card__line--up" part="line line-car line-up"></div>
+              <div class="tec-card__node" part="node node-car" id="n-car" style="left: var(--pos-car-left, 56%); top: var(--pos-car-top, 90%); --line-len: var(--line-car-len, 55px);">
+                <div class="tec-card__title" part="title title-car" data-title="car">Auto</div>
+                <div class="tec-card__value" part="value value-car" data-k="car">--</div>
+                <div class="tec-card__line tec-card__line--up" part="line line-car line-up"></div>
+              </div>
+            </div>
           </div>
 
           <div class="tec-card__version" id="cardVersion">v${TeslaEnergyFlowCard.version}</div>
